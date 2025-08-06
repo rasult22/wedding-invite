@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/wedding-invite/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Invitation</title>
+  <style>
+    /* Minimal Tailwind-like CSS for this specific layout */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+    
+    .image-container {
+      width: 100%;
+      display: flex;
+    }
+    
+    .image-container.justify-end {
+      justify-content: flex-end;
+      padding: 0 1rem;
+    }
+    
+    .image-container.justify-center {
+      justify-content: center;
+      padding: 0 1rem;
+    }
+    
+    .image-container.pl-4 {
+      padding-left: 1rem;
+      padding-right: 0.25rem;
+    }
+    
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .image-90 { width: 90%; }
+    .image-80 { width: 80%; }
+    .image-70 { width: 70%; }
+    .image-full { width: 100%; }
+    
+    .location-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 1rem;
+    }
+    
+    .map-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-top: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .map-container iframe {
+      position: relative;
+      height: 40vh;
+      width: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="image-container justify-end">
+      <img class="image-90" src="/wedding-invite/first_block.webp" alt="Wedding invitation first block" />
+    </div>
+    
+    <div class="image-container">
+      <img class="image-full" src="/wedding-invite/second_block.webp" alt="Wedding invitation second block" />
+    </div>
+    
+    <div class="image-container pl-4">
+      <img class="image-full" src="/wedding-invite/third_block.webp" alt="Wedding invitation third block" />
+    </div>
+    
+    <div class="image-container justify-center">
+      <img class="image-80" src="/wedding-invite/calendar.webp" alt="Wedding calendar" />
+    </div>
+    
+    <div class="image-container justify-center">
+      <img class="image-80" src="/wedding-invite/plan.webp" alt="Wedding plan" />
+    </div>
+    
+    <div class="location-container">
+      <img class="image-70" src="/wedding-invite/location.webp" alt="Wedding location" />
+      <div class="map-container">
+        <iframe
+          src="https://yandex.kz/map-widget/v1/?ll=78.207544%2C43.578301&mode=search&oid=213943132849&ol=biz&z=17.65"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

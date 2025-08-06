@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/wedding-invite/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Invitation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <main class="space-y-10 py-4 max-w-[500px] mx-auto">
+    <div class="w-full flex justify-end px-4">
+      <img class="w-[90%]" src="/wedding-invite/first_block.webp" alt="Wedding invitation first block" />
+    </div>
+    
+    <div class="w-full flex">
+      <img class="w-full" src="/wedding-invite/second_block.webp" alt="Wedding invitation second block" />
+    </div>
+    
+    <div class="w-full flex pl-4 pr-1">
+      <img class="w-full" src="/wedding-invite/third_block.webp" alt="Wedding invitation third block" />
+    </div>
+    
+    <div class="w-full justify-center flex px-4">
+      <img class="w-[80%]" src="/wedding-invite/calendar.webp" alt="Wedding calendar" />
+    </div>
+    
+    <div class="w-full justify-center flex px-4">
+      <img class="w-[80%]" src="/wedding-invite/plan.webp" alt="Wedding plan" />
+    </div>
+    
+    <div class="w-full justify-center flex flex-col items-center px-4">
+      <img class="w-[70%]" src="/wedding-invite/location.webp" alt="Wedding location" />
+      <div class="shadow-md" style="position: relative; overflow: hidden; width: 100%; margin-top: 24px; border-radius: 16px;">
+        <iframe
+          src="https://yandex.kz/map-widget/v1/?ll=78.207544%2C43.578301&mode=search&oid=213943132849&ol=biz&z=17.65"
+          width="100%"
+          style="position: relative; height: 40vh;"
+          frameborder="0">
+        </iframe>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
