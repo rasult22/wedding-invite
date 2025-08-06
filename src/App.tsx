@@ -27,7 +27,7 @@ function App() {
         <img className="w-[70%]" src={location} alt="" />
         <div className="shadow-md" style={{ position: "relative", overflow: "hidden", width: "100%", marginTop: 24, borderRadius: 16 }}>
           <iframe
-            src="https://yandex.kz/map-widget/v1/?ll=78.207544%2C43.578301&mode=search&oid=213943132849&ol=biz&z=17.65"
+            src="https://yandex.kz/map-widget/v1/?azimuth=6.095276961544309&ll=77.215845%2C43.404279&mode=search&oid=53647128720&ol=biz&tilt=0.07860122354563986&utm_campaign=desktop&utm_medium=search&utm_source=maps&z=16.33"
             width="100%"
             style={{ position: "relative", height: '40vh' }}
            />
@@ -36,5 +36,4 @@ function App() {
     </main>
   );
 }
-
 export default App;
