@@ -71,12 +71,12 @@ function App() {
   };
 
   // Function to reset form (for testing purposes)
-  const resetForm = () => {
-    localStorage.removeItem('wedding_invite_submitted');
-    localStorage.removeItem('wedding_invite_data');
-    setIsSubmitted(false);
-    setFormData({ name: '', option: '' });
-  };
+  // const resetForm = () => {
+  //   localStorage.removeItem('wedding_invite_submitted');
+  //   localStorage.removeItem('wedding_invite_data');
+  //   setIsSubmitted(false);
+  //   setFormData({ name: '', option: '' });
+  // };
 
   return (
     <main className="space-y-10 py-4 max-w-[500px] mx-auto">
