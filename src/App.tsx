@@ -4,7 +4,7 @@ import third_block from '@/../public/third_block.webp'
 import calendar from '@/../public/calendar.webp'
 import plan from '@/../public/plan.webp'
 import location from '@/../public/location.webp'
-import confirm from '@/../public/confirm.png'
+import confirm from '@/../public/confirm.webp'
 import { useState, useEffect } from 'react'
 
 function App() {
