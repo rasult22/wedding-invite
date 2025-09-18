@@ -2,81 +2,43 @@ import first_block from '@/../public/first_block.webp'
 import second_block from '@/../public/second_block.webp'
 import third_block from '@/../public/third_block.webp'
 import calendar from '@/../public/calendar.webp'
-import plan from '@/../public/plan.webp'
+import story_block from '@/../public/story_block.webp'
 import location from '@/../public/location.webp'
-import confirm from '@/../public/confirm.webp'
+import tg_text from '@/../public/tg_text.webp'
 import { useState, useEffect } from 'react'
 
 function App() {
-  const [formData, setFormData] = useState({
-    name: '',
-    option: 'attending'
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
   });
-  
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Check localStorage on component mount
   useEffect(() => {
-    const submissionMarker = localStorage.getItem('wedding_invite_submitted');
-    if (submissionMarker) {
-      setIsSubmitted(true);
-    }
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    const weddingDate = new Date('2025-11-01T00:00:00');
     
-    if (!formData.name.trim() || !formData.option) {
-      alert('Пожалуйста, заполните все поля');
-      return;
-    }
-
-    setIsLoading(true);
-    
-    try {
-      console.log('Form submitted:', formData);
-      const keys = {
-        'attending': 'Приду',
-        'attending-with-spouse': 'Приду с супругой',
-        'cannot-attend': 'Не приду'
+    const updateCountdown = () => {
+      const now = new Date();
+      const difference = weddingDate.getTime() - now.getTime();
+      
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        
+        setTimeLeft({ days, hours, minutes, seconds });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
-      
-      await fetch('https://rasult22.pockethost.io/api/collections/wedding_invite/records', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          option: keys[formData.option as keyof typeof keys] || 'empty'
-        }),
-      });
+    };
 
-      // Mark as submitted in localStorage
-      localStorage.setItem('wedding_invite_submitted', 'true');
-      localStorage.setItem('wedding_invite_data', JSON.stringify({
-        name: formData.name,
-        option: formData.option,
-        submittedAt: new Date().toISOString()
-      }));
-      
-      setIsSubmitted(true);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Произошла ошибка при отправке. Попробуйте еще раз.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
 
-  // Function to reset form (for testing purposes)
-  // const resetForm = () => {
-  //   localStorage.removeItem('wedding_invite_submitted');
-  //   localStorage.removeItem('wedding_invite_data');
-  //   setIsSubmitted(false);
-  //   setFormData({ name: '', option: '' });
-  // };
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <main className="space-y-10 py-4 max-w-[500px] mx-auto">
@@ -86,131 +48,98 @@ function App() {
       <div className="w-full flex">
         <img className="w-full" src={second_block} alt="" />
       </div>
+         {/* Countdown Timer Block */}
+      <div className="w-full flex justify-center px-4">
+        <div className="w-full max-w-md bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 shadow-lg border border-pink-100">
+          <h2 className="text-center text-xl font-semibold text-gray-800 mb-4">
+            До свадьбы осталось:
+          </h2>
+          <div className="grid grid-cols-4 gap-3">
+            <div className="text-center">
+              <div className="bg-white rounded-lg p-3 shadow-sm border border-pink-100">
+                <div className="text-2xl font-bold text-purple-600">
+                  {timeLeft.days.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs text-gray-600 mt-1">дней</div>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-white rounded-lg p-3 shadow-sm border border-pink-100">
+                <div className="text-2xl font-bold text-purple-600">
+                  {timeLeft.hours.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs text-gray-600 mt-1">часов</div>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-white rounded-lg p-3 shadow-sm border border-pink-100">
+                <div className="text-2xl font-bold text-purple-600">
+                  {timeLeft.minutes.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs text-gray-600 mt-1">минут</div>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-white rounded-lg p-3 shadow-sm border border-pink-100">
+                <div className="text-2xl font-bold text-purple-600">
+                  {timeLeft.seconds.toString().padStart(2, '0')}
+                </div>
+                <div className="text-xs text-gray-600 mt-1">секунд</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="w-full flex pl-4 pr-1">
         <img className="w-full" src={third_block} alt="" />
       </div>
-      <div className="w-full justify-center flex px-4">
-        <img className="w-[80%]" src={calendar} alt="" />
+      
+   
+
+      <div className="w-full justify-center flex overflow-hidden px-4">
+        <img className="w-[80%] -mt-10" src={calendar} alt="" />
       </div>
       <div className="w-full justify-center flex px-4">
-        <img className="w-[80%]" src={plan} alt="" />
+        <img className="w-[80%]" src={story_block} alt="" />
       </div>
       <div className="w-full justify-center flex flex-col items-center px-4">
         <img className="w-[70%]" src={location} alt="" />
         <div className="shadow-md" style={{ position: "relative", overflow: "hidden", width: "100%", marginTop: 24, borderRadius: 16 }}>
           <iframe
-            src="https://yandex.kz/map-widget/v1/?azimuth=6.095276961544309&ll=77.215845%2C43.404279&mode=search&oid=53647128720&ol=biz&tilt=0.07860122354563986&utm_campaign=desktop&utm_medium=search&utm_source=maps&z=16.33"
+            src="https://yandex.kz/map-widget/v1/?ll=77.328240%2C43.368003&mode=poi&poi%5Bpoint%5D=77.304900%2C43.368590&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D111975538931&z=15.06"
             width="100%"
             style={{ position: "relative", height: '40vh' }}
            />
         </div>
       </div>
-      <div className="w-full flex flex-col items-center px-4">
-        <img className="w-[80%]" src={confirm} alt="" />
-        
-        {!isSubmitted ? (
-          <form onSubmit={handleSubmit} className="w-full max-w-md mt-6 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Имя и фамилия (Если придете с парой, то укажите оба)
-              </label>
-              <input 
-                type="text" 
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Введите ваше имя"
-                disabled={isLoading}
-                required
-              />
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <input
-                  id="attending"
-                  name="attendance"
-                  type="radio"
-                  value="attending"
-                  checked={formData.option === 'attending'}
-                  onChange={(e) => setFormData({...formData, option: e.target.value})}
-                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
-                  disabled={isLoading}
-                />
-                <label htmlFor="attending" className="ml-3 text-sm text-gray-700">
-                  Приду
-                </label>
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  id="attending-with-spouse"
-                  name="attendance"
-                  type="radio"
-                  value="attending-with-spouse"
-                  checked={formData.option === 'attending-with-spouse'}
-                  onChange={(e) => setFormData({...formData, option: e.target.value})}
-                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
-                  disabled={isLoading}
-                />
-                <label htmlFor="attending-with-spouse" className="ml-3 text-sm text-gray-700">
-                  Приду с супругой
-                </label>
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  id="cannot-attend"
-                  name="attendance"
-                  type="radio"
-                  value="cannot-attend"
-                  checked={formData.option === 'cannot-attend'}
-                  onChange={(e) => setFormData({...formData, option: e.target.value})}
-                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
-                  disabled={isLoading}
-                />
-                <label htmlFor="cannot-attend" className="ml-3 text-sm text-gray-700">
-                  К сожалению не смогу прийти
-                </label>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`w-full py-3 px-6 rounded-full transition-colors duration-200 ${
-                isLoading 
-                  ? 'bg-gray-400 cursor-not-allowed' 
-                  : 'bg-[#E5C8C0] hover:bg-[#D3B8B0]'
-              } text-[#2C2A2A]`}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Отправляется...
-                </div>
-              ) : (
-                'Отправить'
-              )}
-            </button>
-          </form>
-        ) : (
-          <div className="w-full max-w-md mt-6 text-center">
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-6 rounded-lg">
-              <div className="text-2xl mb-2">✅</div>
-              <h3 className="text-lg font-semibold mb-2">Спасибо!</h3>
-              <p className="text-sm">Ваш ответ успешно отправлен. Мы получили вашу информацию о присутствии на свадьбе.</p>
-            </div>
-            
-            {/* Reset button for testing - remove in production */}
-            {/* <button
-              onClick={resetForm}
-              className="mt-4 text-sm text-gray-500 hover:text-gray-700 underline"
-            >
-              Изменить ответ (для тестирования)
-            </button> */}
-          </div>
-        )}
+      <div className='w-full justify-center flex flex-col items-center px-4'>
+        <img className='max-w-[60%]' src={tg_text} alt="" />
+        {/*
+          Дорогие гости, свадебные фотографии и видео сможете получить в этом Телеграм канале
+        */}
+        <a 
+          className='mt-4 flex items-center gap-3 px-6 py-3 rounded-[20px]
+            bg-gradient-to-r from-[#F5EBFF] to-[#E8D5FF]
+            active:from-[#E8D5FF] active:to-[#F5EBFF]
+            transition-all duration-300 ease-in-out
+            shadow-md active:shadow-lg
+            transform active:-translate-y-1
+            border border-[#F5EBFF] active:border-[#E8D5FF]'
+          href='https://t.me/weddingabdurakhman'
+          target='_blank'
+        >
+          Перейти на канал
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+            <g clip-path="url(#clip0_409_426)">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M24.5 12.0054C24.5 18.6328 19.1274 24.0054 12.5 24.0054C5.87258 24.0054 0.5 18.6328 0.5 12.0054C0.5 5.37795 5.87258 0.00537109 12.5 0.00537109C19.1274 0.00537109 24.5 5.37795 24.5 12.0054ZM12.93 8.8643C11.7628 9.34977 9.43014 10.3546 5.93189 11.8787C5.36383 12.1046 5.06626 12.3256 5.03917 12.5417C4.99339 12.9069 5.45071 13.0507 6.07347 13.2465C6.15818 13.2731 6.24595 13.3007 6.33594 13.33C6.94864 13.5291 7.77283 13.7621 8.20129 13.7714C8.58994 13.7798 9.02373 13.6196 9.50264 13.2907C12.7712 11.0844 14.4584 9.96918 14.5643 9.94514C14.639 9.92818 14.7426 9.90685 14.8128 9.96922C14.8829 10.0316 14.876 10.1497 14.8686 10.1814C14.8233 10.3745 13.0281 12.0435 12.0991 12.9071C11.8095 13.1764 11.6041 13.3674 11.5621 13.411C11.468 13.5087 11.3721 13.6011 11.28 13.69C10.7108 14.2387 10.2839 14.6502 11.3036 15.3222C11.7936 15.6451 12.1858 15.9121 12.577 16.1785C13.0042 16.4695 13.4303 16.7596 13.9816 17.121C14.1221 17.2131 14.2562 17.3087 14.3869 17.4019C14.8841 17.7563 15.3307 18.0748 15.8826 18.024C16.2032 17.9945 16.5345 17.693 16.7027 16.7937C17.1002 14.6685 17.8816 10.0638 18.0622 8.16634C18.078 8.0001 18.0581 7.78734 18.0422 7.69395C18.0262 7.60055 17.9928 7.46748 17.8714 7.36897C17.7276 7.25231 17.5056 7.22771 17.4064 7.22945C16.955 7.23741 16.2626 7.47819 12.93 8.8643Z" fill="#25262B"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_409_426">
+                <rect width="24" height="24" fill="white" transform="translate(0.5 0.00537109)"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </a>
       </div>
     </main>
   );
